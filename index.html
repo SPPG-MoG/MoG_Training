@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoG Ministerial Correspondence - SPPG Training Platform</title>
+<style>
+:root{--navy:#0d1b2e;--navy-mid:#162340;--teal:#0a8a7e;--teal-bright:#0db5a6;--gold:#c9a227;--gold-light:#e8c547;--cream:#f7f4ef;--warm:#fdfcfa;--text:#1a1a2e;--textl:#4a5068;--border:rgba(13,27,46,0.12);--shadow:0 4px 32px rgba(13,27,46,0.12);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden;}
+#emailGate{position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
+#emailGate.hidden{display:none;}
+.gate-box{background:var(--navy-mid);border:1px solid rgba(10,182,166,0.3);border-radius:16px;padding:48px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.5);}
+.gate-logo{font-family:Georgia,serif;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-bright);margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.gate-logo::before,.gate-logo::after{content:'';flex:1;height:1px;background:rgba(10,182,166,0.3);}
+.gate-title{font-family:Georgia,serif;font-size:1.8rem;color:white;margin-bottom:8px;line-height:1.2;}
+.gate-title span{color:var(--gold-light);}
+.gate-sub{font-size:0.9rem;color:rgba(255,255,255,0.5);margin-bottom:32px;line-height:1.6;}
+.gate-input-wrap{position:relative;margin-bottom:12px;}
+.gate-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:14px 18px;font-family:'Segoe UI',Arial,sans-serif;font-size:0.95rem;color:white;outline:none;transition:border-color 0.2s;}
+.gate-input::placeholder{color:rgba(255,255,255,0.3);}
+.gate-input:focus{border-color:var(--teal-bright);}
+.gate-input.error{border-color:#c0392b;}
+.gate-error{font-size:0.82rem;color:#e74c3c;margin-bottom:16px;min-height:18px;text-align:left;}
+.gate-btn{width:100%;background:var(--teal);color:white;border:none;border-radius:8px;padding:14px;font-family:'Segoe UI',Arial,sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s,transform 0.2s;letter-spacing:0.02em;}
+.gate-btn:hover{background:var(--teal-bright);transform:translateY(-1px);}
+.gate-note{font-size:0.78rem;color:rgba(255,255,255,0.3);margin-top:20px;line-height:1.5;}
+#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;display:none;}
+.hero{background:var(--navy);color:white;position:relative;overflow:hidden;min-height:300px;display:flex;align-items:center;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(10,138,126,0.18) 0%,transparent 60%),radial-gradient(ellipse at 10% 80%,rgba(201,162,39,0.12) 0%,transparent 50%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:48px 48px;}
+.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:60px 40px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(10,138,126,0.25);border:1px solid rgba(10,182,166,0.4);color:var(--teal-bright);font-family:Consolas,'Courier New',monospace;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:4px;margin-bottom:20px;}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--teal-bright);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+.hero h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;line-height:1.15;margin-bottom:14px;color:white;}
+.hero h1 span{color:var(--gold-light);}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.65);max-width:560px;line-height:1.6;margin-bottom:32px;}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap;}
+.hero-stat .num{font-family:Georgia,serif;font-size:2rem;font-weight:700;color:var(--gold-light);display:block;line-height:1;}
+.hero-stat .label{font-size:0.75rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;display:block;}
+.nav-bar{background:var(--navy-mid);border-bottom:2px solid var(--teal);position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav-btn{background:none;border:none;color:rgba(255,255,255,0.55);font-family:'Segoe UI',Arial,sans-serif;font-size:0.82rem;font-weight:500;padding:14px 16px;cursor:pointer;white-space:nowrap;position:relative;transition:color 0.2s;letter-spacing:0.02em;}
+.nav-btn::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:2px;background:var(--teal-bright);transform:scaleX(0);transition:transform 0.2s;}
+.nav-btn:hover,.nav-btn.active{color:white;}
+.nav-btn.active::after,.nav-btn:hover::after{transform:scaleX(1);}
+.main{max-width:1100px;margin:0 auto;padding:48px 40px;}
+.section{display:none;animation:fadeIn 0.35s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.section-header{margin-bottom:36px;padding-bottom:20px;border-bottom:2px solid var(--border);display:flex;align-items:flex-end;gap:20px;}
+.section-num{font-family:Georgia,serif;font-size:3.5rem;font-weight:700;color:rgba(13,27,46,0.08);line-height:1;flex-shrink:0;}
+.section-title h2{font-family:Georgia,'Times New Roman',serif;font-size:1.7rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.section-title p{font-size:0.9rem;color:var(--textl);}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:32px;}
+.card{background:var(--warm);border:1px solid var(--border);border-radius:12px;padding:24px;transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--teal);border-radius:4px 0 0 4px;}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--teal);}
+.card.gold::before{background:var(--gold);}
+.card.red::before{background:#c0392b;}
+.card.purple::before{background:#6c5ce7;}
+.card.navy-card::before{background:var(--navy);}
+.card-icon{font-size:1.8rem;margin-bottom:12px;display:block;}
+.card h3{font-family:Georgia,serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.card p{font-size:0.88rem;color:var(--textl);line-height:1.6;}
+.ref-badge{display:inline-block;font-family:Consolas,'Courier New',monospace;font-size:0.72rem;background:var(--navy);color:var(--teal-bright);padding:2px 8px;border-radius:3px;margin-bottom:10px;}
+.callout{border-radius:10px;padding:18px 22px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start;}
+.callout-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px;}
+.callout-body{flex:1;}
+.callout-body strong{font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:5px;}
+.callout-body p,.callout-body ul{font-size:0.9rem;line-height:1.6;}
+.callout-body ul{padding-left:16px;}
+.callout-body li{margin-bottom:3px;}
+.callout.warn{background:#fff8e1;border-left:4px solid var(--gold);}
+.callout.warn .callout-body strong{color:#7a5c00;}
+.callout.danger{background:#fdecea;border-left:4px solid #c0392b;}
+.callout.danger .callout-body strong{color:#7b1818;}
+.callout.info{background:#e8f8f7;border-left:4px solid var(--teal);}
+.callout.info .callout-body strong{color:#064a44;}
+.callout.tip{background:#eef2ff;border-left:4px solid #6c5ce7;}
+.callout.tip .callout-body strong{color:#3d2d8a;}
+.data-table{width:100%;border-collapse:collapse;margin-bottom:28px;font-size:0.88rem;border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+.data-table thead tr{background:var(--navy);color:white;}
+.data-table th{padding:12px 16px;text-align:left;font-weight:600;font-size:0.82rem;letter-spacing:0.04em;text-transform:uppercase;}
+.data-table td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.data-table tbody tr:last-child td{border-bottom:none;}
+.data-table tbody tr:nth-child(even){background:rgba(13,27,46,0.025);}
+.data-table tbody tr:hover{background:rgba(10,138,126,0.06);}
+.deadline-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;}
+.deadline-chip{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:16px 20px;min-width:150px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.2s;}
+.deadline-chip:hover{transform:translateY(-2px);}
+.deadline-chip .days{font-family:Georgia,serif;font-size:2.2rem;font-weight:700;display:block;line-height:1;}
+.deadline-chip .type{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--textl);display:block;margin-top:4px;font-weight:500;}
+.deadline-chip.red .days{color:#c0392b;}
+.deadline-chip.amber .days{color:var(--gold);}
+.deadline-chip.green .days{color:var(--teal);}
+.deadline-chip.blue .days{color:#2980b9;}
+.accordion{margin-bottom:12px;}
+.accordion-header{background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s,border-color 0.2s;font-weight:500;font-size:0.95rem;color:var(--navy);}
+.accordion-header:hover{background:rgba(10,138,126,0.06);border-color:var(--teal);}
+.accordion-header.open{background:var(--navy);color:white;border-color:var(--navy);border-radius:8px 8px 0 0;}
+.accordion-arrow{font-size:0.8rem;transition:transform 0.2s;}
+.accordion-header.open .accordion-arrow{transform:rotate(180deg);}
+.accordion-body{display:none;background:var(--warm);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;padding:20px;font-size:0.9rem;line-height:1.7;color:var(--text);}
+.accordion-body.open{display:block;animation:slideDown 0.2s ease;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.flow{display:flex;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.flow-step{background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:0.85rem;font-weight:500;color:var(--navy);display:flex;align-items:center;gap:8px;box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+.flow-step .step-num{width:22px;height:22px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+.flow-arrow{color:var(--textl);font-size:1rem;flex-shrink:0;}
+.flow-step.decision{border-color:var(--gold);background:#fffdf0;}
+.flow-step.decision .step-num{background:var(--gold);color:var(--navy);}
+.flow-step.end{border-color:var(--teal);background:#f0fbfa;}
+.flow-step.end .step-num{background:var(--teal);}
+.timeline{position:relative;padding-left:32px;margin-bottom:32px;}
+.timeline::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--teal),var(--gold));}
+.timeline-item{position:relative;margin-bottom:24px;}
+.timeline-item::before{content:'';position:absolute;left:-27px;top:6px;width:12px;height:12px;background:var(--teal);border:2px solid var(--cream);border-radius:50%;box-shadow:0 0 0 2px var(--teal);}
+.timeline-item.gold-dot::before{background:var(--gold);box-shadow:0 0 0 2px var(--gold);}
+.timeline-item h4{font-weight:600;color:var(--navy);font-size:0.95rem;margin-bottom:4px;}
+.timeline-item p{font-size:0.87rem;color:var(--textl);line-height:1.6;}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px;}
+.contact-card{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:18px 20px;font-size:0.87rem;transition:box-shadow 0.2s;}
+.contact-card:hover{box-shadow:var(--shadow);}
+.contact-card .trust-name{font-weight:700;font-size:0.9rem;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.contact-card .trust-name span{width:8px;height:8px;background:var(--teal);border-radius:50%;flex-shrink:0;}
+.contact-card .contact-type{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--textl);margin-bottom:3px;margin-top:8px;font-weight:600;}
+.contact-card a{color:var(--teal);text-decoration:none;word-break:break-all;}
+.contact-card a:hover{text-decoration:underline;}
+.checklist{margin-bottom:24px;}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.9rem;line-height:1.5;cursor:pointer;}
+.check-item:last-child{border-bottom:none;}
+.check-box{width:20px;height:20px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:transparent;transition:all 0.15s;}
+.check-item.done .check-box{background:var(--teal);border-color:var(--teal);color:white;}
+.check-item.done>span{text-decoration:line-through;color:var(--textl);}
+.code-block{background:var(--navy);border-radius:8px;padding:16px 20px;font-family:Consolas,'Courier New',monospace;font-size:0.82rem;color:#a8c7fa;line-height:1.7;margin-bottom:20px;overflow-x:auto;}
+.code-block .c-key{color:var(--teal-bright);}
+.code-block .c-val{color:#ffd166;}
+.code-block .c-comment{color:rgba(255,255,255,0.3);}
+.subhead{font-family:Georgia,serif;color:var(--navy);font-size:1.2rem;margin:24px 0 16px;}
+.quiz-container{max-width:720px;}
+.quiz-progress-bar{height:6px;background:var(--border);border-radius:3px;margin-bottom:32px;overflow:hidden;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:3px;transition:width 0.4s ease;}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:0.82rem;color:var(--textl);}
+.quiz-meta .score-live{font-family:Consolas,monospace;font-weight:500;color:var(--navy);}
+.question-card{background:var(--warm);border:1px solid var(--border);border-radius:14px;padding:32px;box-shadow:var(--shadow);margin-bottom:24px;}
+.question-num{font-family:Consolas,monospace;font-size:0.75rem;color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.question-num::after{content:'';flex:1;height:1px;background:var(--border);}
+.question-text{font-size:1.08rem;font-weight:500;color:var(--navy);line-height:1.55;margin-bottom:24px;}
+.options-list{display:flex;flex-direction:column;gap:10px;}
+.option-btn{background:white;border:2px solid var(--border);border-radius:8px;padding:14px 18px;text-align:left;cursor:pointer;font-family:'Segoe UI',Arial,sans-serif;font-size:0.93rem;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:flex-start;gap:12px;}
+.option-btn:hover:not(:disabled){border-color:var(--teal);background:rgba(10,138,126,0.04);}
+.option-letter{width:28px;height:28px;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;font-family:Consolas,monospace;flex-shrink:0;color:var(--textl);transition:background 0.15s,color 0.15s;}
+.option-btn:hover:not(:disabled) .option-letter{background:var(--teal);color:white;border-color:var(--teal);}
+.option-btn.correct{border-color:var(--teal);background:rgba(10,138,126,0.08);color:var(--navy);}
+.option-btn.correct .option-letter{background:var(--teal);color:white;border-color:var(--teal);}
+.option-btn.wrong{border-color:#c0392b;background:rgba(192,57,43,0.06);color:var(--textl);}
+.option-btn.wrong .option-letter{background:#c0392b;color:white;border-color:#c0392b;}
+.option-btn:disabled{cursor:default;}
+.feedback-box{border-radius:8px;padding:14px 18px;margin-top:16px;font-size:0.9rem;line-height:1.6;display:none;}
+.feedback-box.correct{background:rgba(10,138,126,0.1);border-left:4px solid var(--teal);color:#064a44;display:block;}
+.feedback-box.wrong{background:rgba(192,57,43,0.08);border-left:4px solid #c0392b;color:#7b1818;display:block;}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.btn{font-family:'Segoe UI',Arial,sans-serif;font-size:0.9rem;font-weight:600;padding:12px 28px;border-radius:8px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.02em;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-primary:hover{background:#1e3054;transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,27,46,0.25);}
+.btn-secondary{background:transparent;color:var(--textl);border:2px solid var(--border);}
+.btn-secondary:hover{border-color:var(--teal);color:var(--teal);}
+.btn-teal{background:var(--teal);color:white;}
+.btn-teal:hover{background:var(--teal-bright);transform:translateY(-2px);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+.results-panel{display:none;text-align:center;padding:48px 32px;background:var(--warm);border-radius:16px;border:1px solid var(--border);box-shadow:0 12px 60px rgba(13,27,46,0.18);}
+.results-panel.show{display:block;animation:fadeIn 0.5s ease;}
+.results-score-ring{width:140px;height:140px;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:Georgia,serif;position:relative;}
+.results-score-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:6px solid var(--border);}
+.results-score-ring.pass::before{border-color:var(--teal);box-shadow:0 0 30px rgba(10,138,126,0.2);}
+.results-score-ring.fail::before{border-color:#c0392b;}
+.results-score-ring .pct{font-size:2.6rem;font-weight:700;line-height:1;}
+.results-score-ring.pass .pct{color:var(--teal);}
+.results-score-ring.fail .pct{color:#c0392b;}
+.results-score-ring .out-of{font-size:0.8rem;color:var(--textl);font-family:'Segoe UI',sans-serif;}
+.results-title{font-family:Georgia,serif;font-size:1.6rem;color:var(--navy);margin-bottom:8px;}
+.results-sub{font-size:0.95rem;color:var(--textl);margin-bottom:32px;line-height:1.6;}
+.results-breakdown{display:flex;justify-content:center;gap:24px;margin-bottom:32px;flex-wrap:wrap;}
+.rb-item{text-align:center;}
+.rb-item .val{font-family:Georgia,serif;font-size:2rem;font-weight:700;display:block;line-height:1;}
+.rb-item .val.correct{color:var(--teal);}
+.rb-item .val.wrong{color:#c0392b;}
+.rb-item .lbl{font-size:0.78rem;color:var(--textl);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;display:block;}
+.review-list{text-align:left;margin-top:24px;}
+.review-item{padding:12px 16px;border-radius:8px;margin-bottom:8px;font-size:0.88rem;line-height:1.5;border-left:4px solid;}
+.review-item.r-correct{background:rgba(10,138,126,0.07);border-color:var(--teal);}
+.review-item.r-wrong{background:rgba(192,57,43,0.06);border-color:#c0392b;}
+.review-item .q-num{font-family:Consolas,monospace;font-size:0.75rem;color:var(--textl);margin-bottom:3px;}
+.review-item .q-text{font-weight:600;color:var(--navy);margin-bottom:5px;}
+.review-item .a-correct-lbl{font-size:0.82rem;color:var(--teal);font-weight:500;}
+.scroll-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--navy);color:white;border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:all 0.2s;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center;}
+.scroll-top.visible{opacity:1;pointer-events:all;}
+.scroll-top:hover{background:var(--teal);transform:translateY(-3px);}
+@media(max-width:680px){.hero-content{padding:40px 20px;}.main{padding:32px 20px;}.nav-inner{padding:0 16px;}.section-num{font-size:2.5rem;}}
+</style>
+</head>
+<body>
+<div id="emailGate">
+  <div class="gate-box">
+    <div class="gate-logo">SPPG &middot; HSCNI</div>
+    <h1 class="gate-title">MoG <span>Training</span> Platform</h1>
+    <p class="gate-sub">This platform is for HSCNI staff only. Please enter your HSCNI email address to continue.</p>
+    <div class="gate-input-wrap">
+      <input class="gate-input" id="gateEmail" type="email" placeholder="yourname@hscni.net" autocomplete="email" onkeydown="if(event.key==='Enter')checkEmail()">
+    </div>
+    <div class="gate-error" id="gateError"></div>
+    <button class="gate-btn" onclick="checkEmail()">Access Platform</button>
+    <p class="gate-note">Access is restricted to @hscni.net email addresses.<br>If you have an issue accessing this platform, contact AQHospitalCare@hscni.net</p>
+  </div>
+</div>
+<canvas id="confettiCanvas"></canvas>
+<div class="hero">
+<div class="hero-grid"></div>
+<div class="hero-content">
+<div class="hero-badge">SPPG &middot; Ministerial Correspondence</div>
+<h1>Machinery of<br><span>Government</span> Onboarding</h1>
+<p class="hero-sub">Your complete guide to ministerial correspondence, Assembly Questions, and the processes that keep DoH Private Office running.</p>
+<div class="hero-stats">
+<div class="hero-stat"><span class="num">6</span><span class="label">Case Types</span></div>
+<div class="hero-stat"><span class="num">20</span><span class="label">Quiz Questions</span></div>
+<div class="hero-stat"><span class="num">5</span><span class="label">Core Modules</span></div>
+<div class="hero-stat"><span class="num">HSC</span><span class="label">Trust Contacts</span></div>
+</div>
+</div>
+</div>
+<nav class="nav-bar">
+<div class="nav-inner">
+<button class="nav-btn active" onclick="showSection('overview',this)">Overview</button>
+<button class="nav-btn" onclick="showSection('aqs',this)">Assembly Questions</button>
+<button class="nav-btn" onclick="showSection('correspondence',this)">Correspondence</button>
+<button class="nav-btn" onclick="showSection('process',this)">Processes &amp; Flows</button>
+<button class="nav-btn" onclick="showSection('contacts',this)">Trust Contacts</button>
+<button class="nav-btn" onclick="showSection('quiz',this)">&#128221; Knowledge Test</button>
+</div>
+</nav>
+<main class="main">
+<section class="section active" id="overview">
+<div class="section-header"><div class="section-num">01</div><div class="section-title"><h2>Overview &mdash; What is Ministerial Correspondence?</h2><p>Understanding your role and the types of cases you will be working with</p></div></div>
+<div class="callout info"><div class="callout-icon">&#8505;&#65039;</div><div class="callout-body"><strong>Welcome</strong><p>All correspondence for SPPG is issued from the DoH Private Office. Depending on the case type, it will land in your Directorate co-ordination mailbox. Your job is to respond accurately, on time, and in the correct format every time.</p></div></div>
+<div class="card-grid">
+<div class="card"><span class="card-icon">&#128203;</span><div class="ref-badge">AQW / AQO</div><h3>Assembly Questions</h3><p>Written questions from MLAs tabled daily to hold Ministers to account. Two types: Ordinary Written (4-day return) and Priority Written (1-2 day return).</p></div>
+<div class="card gold"><span class="card-icon">&#9989;</span><div class="ref-badge">COR / SCORR</div><h3>Correspondence Cases</h3><p>Letters from MPs, MLAs, Councillors, or CEOs/Chairs of Trusts. The Minister signs off on these. Return within 10 working days.</p></div>
+<div class="card red"><span class="card-icon">&#128100;</span><div class="ref-badge">TOF / STOF</div><h3>Treat as Official</h3><p>Letters from members of the public or Councillors. Answered directly on the Minister's behalf. Does NOT return to Private Office unless flagged. Return: 10-14 working days.</p></div>
+<div class="card purple"><span class="card-icon">&#128197;</span><div class="ref-badge">INV / SINV</div><h3>Invitation Cases</h3><p>Invitations for the Minister/Perm Sec to attend events or meetings. Two-stage process: Advice and Reply, then (if accepted) full Briefing.</p></div>
+<div class="card navy-card"><span class="card-icon">&#128236;</span><div class="ref-badge">GM</div><h3>General Mail</h3><p>Letters or circulars that do not fit the above categories. Issued for information only. If a response is needed, notify Private Office to reclassify as COR or TOF.</p></div>
+</div>
+<div class="callout warn"><div class="callout-icon">&#9888;&#65039;</div><div class="callout-body"><strong>The S Prefix</strong><p>You will notice SCORR, SINV, STOF - the S stands for Secretarial, meaning the Permanent Secretary is in post rather than a Minister. Handle these identically, but route to the Perm Sec office.</p></div></div>
+<h3 class="subhead">Deadline Quick Reference</h3>
+<div class="deadline-row">
+<div class="deadline-chip red"><span class="days">1-2</span><span class="type">Priority AQW<br>(days to PO)</span></div>
+<div class="deadline-chip amber"><span class="days">4</span><span class="type">Ordinary AQW<br>(days to PO)</span></div>
+<div class="deadline-chip green"><span class="days">10</span><span class="type">COR / TOF<br>(working days)</span></div>
+<div class="deadline-chip blue"><span class="days">8</span><span class="type">COR/INV Routine<br>(clearance days)</span></div>
+<div class="deadline-chip amber"><span class="days">2</span><span class="type">COR/INV Urgent<br>(clearance days)</span></div>
+</div>
+<div class="callout danger"><div class="callout-icon">&#128680;</div><div class="callout-body"><strong>Non-negotiable rule</strong><p>AQ deadlines are set by the Northern Ireland Assembly Standing Orders - not by Private Office. Missing them is not an option. Extensions are only granted in exceptional circumstances and must be requested via email on or before the day it is due.</p></div></div>
+<h3 class="subhead">Frequently Asked Questions</h3>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">What do I do if I receive a request not via the official process? <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body">Forward it immediately to your Directorate co-ordination mailbox. It must be processed through the official route via the Minister/Permanent Secretary office. The onus is on whoever receives it to route it correctly.</div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">Can I use a standard response if I have answered a similar question before? <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body">Text from previous similar responses can be used, but you must ensure the specific issues raised have been fully addressed. It is the drafter's responsibility that the response is accurate and complete.</div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">A case has been allocated to me but relates to another Directorate - what do I do? <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body">Contact the co-ordination team. If the main element sits with another Directorate, the co-ordination team will arrange a formal transfer via the Minister/Perm Sec office. You must provide the email of acceptance of the transfer to Private Office. AQs will not be reallocated without prior agreement between branches.</div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">When does a complaint become a TOF? <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body">When an enquirer writes directly to, or copies in, the Permanent Secretary or Minister. At that point it enters the formal correspondence system and must be treated accordingly.</div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">What training is available? <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body">HSC Learning Centre provides: <strong>Machinery of Government</strong> (core course), <strong>HSC eLearning - Working with Minister</strong>, and <strong>HSC Face-to-Face Training - Working with Minister</strong>. Guides and hints are also produced by Private Office and available on the Insight intranet.</div></div>
+</section>
+<section class="section" id="aqs">
+<div class="section-header"><div class="section-num">02</div><div class="section-title"><h2>Assembly Questions &mdash; AQW &amp; AQO</h2><p>Everything you need to know about written and oral Assembly Questions</p></div></div>
+<div class="callout info"><div class="callout-icon">&#128214;</div><div class="callout-body"><strong>Why do AQs matter?</strong><p>"It is of paramount importance that Ministers give accurate and truthful information to the Assembly, correcting any inadvertent error at the earliest opportunity. Ministers who knowingly mislead the Assembly shall be expected to resign." Your draft is the Minister's answer on public record.</p></div></div>
+<div class="card-grid">
+<div class="card"><span class="card-icon">&#128221;</span><div class="ref-badge">AQW - Ordinary Written</div><h3>Ordinary Written</h3><p>Standard written question from an MLA. Each MLA can ask up to 5 questions daily. <strong>Deadline to Private Office: 4 working days.</strong></p></div>
+<div class="card gold"><span class="card-icon">&#9889;</span><div class="ref-badge">AQW - Priority Written</div><h3>Priority Written</h3><p>Urgent written question - each MLA may include one priority per day. <strong>Deadline to Private Office: 1-2 working days.</strong></p></div>
+<div class="card purple"><span class="card-icon">&#127908;</span><div class="ref-badge">AQO - Oral</div><h3>Oral Questions</h3><p>Questions put to Ministers in the Assembly chamber. Involves agreement with Directorate, Service Lead and AQ Team before submission to Central Engagement Team.</p></div>
+</div>
+<h3 class="subhead">Step-by-Step: Handling an AQW</h3>
+<div class="flow">
+<div class="flow-step"><div class="step-num">1</div>Private Office issues via KN system</div>
+<div class="flow-arrow">&#8594;</div>
+<div class="flow-step"><div class="step-num">2</div>AQ ref allocated e.g. AQW 1234/17-22</div>
+<div class="flow-arrow">&#8594;</div>
+<div class="flow-step decision"><div class="step-num">3</div>Directorate determination</div>
+<div class="flow-arrow">&#8594;</div>
+<div class="flow-step"><div class="step-num">4</div>Service Lead contacted</div>
+<div class="flow-arrow">&#8594;</div>
+<div class="flow-step"><div class="step-num">5</div>Draft response prepared</div>
+<div class="flow-arrow">&#8594;</div>
+<div class="flow-step"><div class="step-num">6</div>Co-Director clearance</div>
+<div class="flow-arrow">&#8594;</div>
+<div class="flow-step end"><div class="step-num">7</div>Quality assured and submitted to Private Office</div>
+</div>
+<h3 class="subhead">Format Requirements</h3>
+<div class="code-block">
+<span class="c-comment">// AQW Answer Template - Key Requirements</span><br>
+<span class="c-key">Font:</span> <span class="c-val">Times New Roman, size 14</span><br>
+<span class="c-key">Line spacing:</span> <span class="c-val">1.5 (answer) / Single (question text)</span><br>
+<span class="c-key">Alignment:</span> <span class="c-val">Justified</span><br>
+<span class="c-key">Format:</span> <span class="c-val">Microsoft Word ONLY - no tables in picture or Excel format</span><br>
+<span class="c-key">Background note:</span> <span class="c-val">Arial, size 14, 1.5 spaced - max 1 A4 page, numbered paragraphs</span><br>
+<span class="c-key">Margins:</span> <span class="c-val">DO NOT alter from template</span>
+</div>
+<h3 class="subhead">Background Note Checklist</h3>
+<div class="checklist">
+<div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>The Member's known political, specialist and constituency interests (from party websites etc.)</span></div>
+<div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Recent developments or incidents affecting the Member's constituents</span></div>
+<div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Any major changes in government policy - announced or forthcoming</span></div>
+<div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>What the Minister has previously said on the subject</span></div>
+<div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Press cuttings, Hansard extracts or previous correspondence</span></div>
+<div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Drafter name, date drafted, HoD/HoB clearance name and date</span></div>
+</div>
+<h3 class="subhead">Drafting Checklist - Before You Submit</h3>
+<table class="data-table"><thead><tr><th>Category</th><th>Check</th><th>Notes</th></tr></thead><tbody>
+<tr><td><strong>Format</strong></td><td>Layout, Font, AQ No., Minister, Member's Name, Date for Answer</td><td>Use Annex A template - do not alter margins</td></tr>
+<tr><td><strong>Content</strong></td><td>Plain English? Answers the question? Factual? Consistent with previous answers?</td><td>Cross-check prior AQ answers on AIMS portal</td></tr>
+<tr><td><strong>Numbers</strong></td><td>Tables and numbers add up?</td><td>Check all figures and sources</td></tr>
+<tr><td><strong>References</strong></td><td>Document references include website address; copies flagged for Assembly Library</td><td>&mdash;</td></tr>
+<tr><td><strong>Disproportionate Cost</strong></td><td>If cost limit (750 pounds) is breached, use standard formula and advise Minister</td><td>Ministers may direct you to answer anyway</td></tr>
+<tr><td><strong>Part Inputs</strong></td><td>Have any part inputs been cleared by the relevant Department's Ministers?</td><td>Always via Private Office - not directly</td></tr>
+</tbody></table>
+<div class="callout tip"><div class="callout-icon">&#128161;</div><div class="callout-body"><strong>Referring to a previous answer</strong><p>If a similar question was answered within the same Assembly session (within a few months), you may use: "I would refer the Member to the reply I gave the Member for [constituency] on [date]."</p></div></div>
+<div class="callout danger"><div class="callout-icon">&#128680;</div><div class="callout-body"><strong>Errors in published answers</strong><p>If you discover a factual error in a published AQ answer, notify Private Office immediately. Do not wait. Private Office will inform the Minister and the Assembly Business Office once a correction is cleared.</p></div></div>
+</section>
+<section class="section" id="correspondence">
+<div class="section-header"><div class="section-num">03</div><div class="section-title"><h2>Correspondence, Invitations &amp; Briefings</h2><p>CORs, TOFs, INVs - how to prepare and submit each type</p></div></div>
+<h3 class="subhead">COR - Correspondence Case</h3>
+<table class="data-table"><thead><tr><th>Element</th><th>Requirement</th></tr></thead><tbody>
+<tr><td><strong>Who sends it?</strong></td><td>MPs, MLAs, Councillors, CEO or Chair of Trust/Board</td></tr>
+<tr><td><strong>Reference format</strong></td><td>e.g. COR-1234-2020 or SCORR-1125-2023</td></tr>
+<tr><td><strong>Timeline</strong></td><td>10 working days. Routine clearance = min 8 working days; Urgent = min 2; Immediate = same day (notify PO in advance)</td></tr>
+<tr><td><strong>Who signs off?</strong></td><td>The Minister (or Perm Sec for SCORRs)</td></tr>
+<tr><td><strong>Trust involvement</strong></td><td>Send to Trust mailbox. If complaint or patient inquiry, refer to Trust to respond directly</td></tr>
+<tr><td><strong>Consent</strong></td><td>Required if the case involves patient/personal data. Use the Regional Consent Form or SPPG Third Party Consent Form</td></tr>
+</tbody></table>
+<h3 class="subhead">COR Advice and Draft Reply - What Your Submission Needs</h3>
+<div class="timeline">
+<div class="timeline-item"><h4>FROM / TO / DATE</h4><p>Name, branch, date. Clearance route: 1. Senior Official, then 2. Minister/Perm Sec.</p></div>
+<div class="timeline-item"><h4>SUMMARY block</h4><p>Issue (1-2 sentences), Timing (Routine/Urgent/Immediate), Presentational Issues (engage Press Office - never assume None), FOI Implications, Executive Referral, Financial/Legislation/Equality/Rural Needs Implications, SpAd Comments, Recommendation.</p></div>
+<div class="timeline-item"><h4>Introduction</h4><p>1-2 sentences: who wrote, when, on what subject.</p></div>
+<div class="timeline-item"><h4>Background</h4><p>Numbered paragraphs. Include the original letter at an Annex. Explain the issue and the Department's current position.</p></div>
+<div class="timeline-item gold-dot"><h4>Recommendation</h4><p>"It is recommended that Minister issues the attached response to [Name] MLA providing an update on / advising that... (Attached at Annex A)"</p></div>
+<div class="timeline-item gold-dot"><h4>Annex A - Draft Reply Letter</h4><p>Addressed to the correspondent. Include Your Ref, Our Ref, Date. Professional, proofread, accurate. Signed as Minister of Health MLA / Permanent Secretary.</p></div>
+</div>
+<div class="callout warn"><div class="callout-icon">&#9888;&#65039;</div><div class="callout-body"><strong>Copied to list (CORs)</strong><p>Always include: Special Adviser, Private Secretary, Private Office mailbox. For SCORRs: Perm Sec mailbox, Kim Burns, and relevant DoH staff. Press Office should always be in the loop.</p></div></div>
+<h3 class="subhead">TOF - Treat as Official</h3>
+<div class="callout info"><div class="callout-icon">&#128100;</div><div class="callout-body"><strong>Key difference</strong><p>TOFs are NOT returned to Private Office for clearance before issue (unless indicated on Action Sheet). Issued directly to the member of the public via the Office Manager using the No Reply mailbox. Signed off by the relevant senior manager - does NOT require AD approval. A copy must be provided to Private Office by the deadline.</p></div></div>
+<h3 class="subhead">INV - Invitation Cases</h3>
+<div class="card-grid">
+<div class="card gold"><span class="card-icon">&#128203;</span><h3>Stage 1 - Advice and Draft Reply</h3><p>Officials advise the Minister on whether to accept or decline. Provide full justification. Draft both acceptance and decline letters if it is a close call.</p></div>
+<div class="card purple"><span class="card-icon">&#128193;</span><h3>Stage 2 - Briefing Pack (if accepted)</h3><p>Only triggered if Minister accepts. Full briefing pack including agenda, pen pictures, speaking notes/speech, Q&amp;A, Lines to Take, Press Release (cleared by Press Office).</p></div>
+</div>
+<div class="callout tip"><div class="callout-icon">&#128161;</div><div class="callout-body"><strong>Briefing - Addressing the Minister</strong><p>Always use the second person: "You will be meeting..." rather than "The Minister will be meeting..." Speaking notes use bulleted lines (not verbatim). Speeches are written verbatim, read aloud to check flow, all acronyms written out in full.</p></div></div>
+<h3 class="subhead">Holding Letter Template</h3>
+<div class="code-block">
+<span class="c-comment">// Standard Holding Letter</span><br><br>
+<span class="c-key">Dear MLA,</span><br><br>
+Thank you for your email of <span class="c-val">[DATE]</span> requesting <span class="c-val">[BRIEF DESCRIPTION]</span>.<br>
+I am sorry to hear about <span class="c-val">[e.g. your constituent's ongoing health problems]</span>.<br><br>
+Your request has been forwarded to <span class="c-val">[X Trust]</span> who will provide<br>
+you with a detailed response by <span class="c-val">[DATE]</span> at the latest.<br><br>
+<span class="c-key">Yours Sincerely, Minister of Health</span>
+</div>
+<div class="callout warn"><div class="callout-icon">&#9888;&#65039;</div><div class="callout-body"><strong>Holding letters - use sparingly</strong><p>Not to be issued routinely. They must always be accompanied by a SUB to Private Office explaining the delay.</p></div></div>
+<h3 class="subhead">Consent Forms</h3>
+<table class="data-table"><thead><tr><th>Form</th><th>When to Use</th><th>Who Signs</th></tr></thead><tbody>
+<tr><td><strong>Regional Form of Consent for Elected Reps</strong></td><td>When an elected rep is raising a case involving patient or special category data on behalf of a constituent</td><td>Elected Representative plus Service User (or appropriate person if no capacity)</td></tr>
+<tr><td><strong>SPPG Third Party Consent Form</strong></td><td>When an enquiry to a Trust involves disclosing confidential/personal information about the service user to a third party</td><td>Service User (authorising elected rep to receive information)</td></tr>
+</tbody></table>
+</section>
+<section class="section" id="process">
+<div class="section-header"><div class="section-num">04</div><div class="section-title"><h2>Case Process Flows</h2><p>Step-by-step journeys for each case type from Private Office to submission</p></div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">&#128309; AQW - Ordinary Written Assembly Question <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body"><div class="timeline">
+<div class="timeline-item"><h4>Private Office issues case via Knowledge Network (KN)</h4><p>AQ reference allocated e.g. AQW 1234/17-22. Lands in Directorate co-ordination mailbox.</p></div>
+<div class="timeline-item"><h4>Case received and logged by AQ Team</h4><p>Allocated to appropriate Service Lead based on subject matter, locality, or specialism.</p></div>
+<div class="timeline-item gold-dot"><h4>Directorate Determination</h4><p>Can the Directorate lead? If no, transfer sought to appropriate Directorate. Await confirmation. Update ownership and reassign Service Lead.</p></div>
+<div class="timeline-item"><h4>Service Lead contacted, question provided</h4><p>Service Lead drafts response. Stakeholder input sought if required.</p></div>
+<div class="timeline-item"><h4>Draft returned to AQ Team</h4><p>Co-Director clearance obtained. Final version provided back to AQ Team.</p></div>
+<div class="timeline-item gold-dot"><h4>Quality Assured</h4><p>Format, content, accuracy checked against good practice guidelines.</p></div>
+<div class="timeline-item"><h4>Submitted to Private Office</h4><p>Email to private.office@health-ni.gov.uk with CM link and Word document attached. Relevant officials copied.</p></div>
+</div></div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">&#128992; AQO - Oral Assembly Question <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body"><div class="timeline">
+<div class="timeline-item"><h4>Forthcoming questions issued by Private Office</h4><p>Earlier than AQW - AQOs need more lead time for preparation.</p></div>
+<div class="timeline-item"><h4>Agreement reached</h4><p>Between Directorate, Service Lead and AQ Team on handling and ownership.</p></div>
+<div class="timeline-item"><h4>Confirmation to Private Office within timeframe</h4></div>
+<div class="timeline-item"><h4>Service Lead drafts response</h4><p>Stakeholder input sought if required.</p></div>
+<div class="timeline-item"><h4>Co-Director approval then Director approval</h4><p>Both levels of clearance required for AQOs.</p></div>
+<div class="timeline-item"><h4>Submitted to Central Engagement Team</h4><p>Quality assured before onward submission to Private Office.</p></div>
+</div></div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">&#128994; COR - Correspondence Case <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body"><div class="timeline">
+<div class="timeline-item"><h4>Correspondence received by Private Office</h4><p>Scanned letter attached to Action Sheet, deadline indicated.</p></div>
+<div class="timeline-item gold-dot"><h4>Directorate Determination</h4><p>Can Directorate lead? If no, transfer to appropriate Directorate with formal acceptance email to PO.</p></div>
+<div class="timeline-item"><h4>Service Lead contacted, case details provided</h4><p>Check: Is consent required? If yes, consent sought via AQ Team before proceeding.</p></div>
+<div class="timeline-item"><h4>Service Lead drafts response</h4><p>Stakeholder input if required. Check: Is a holding letter or extension needed?</p></div>
+<div class="timeline-item gold-dot"><h4>Extension or Holding Letter decision</h4><p>If yes, request raised to Private Office, await approval. If no, proceed directly.</p></div>
+<div class="timeline-item"><h4>Co-Director approval, Quality Assured, Submitted to Private Office</h4><p>Minister/Perm Sec signs and issues.</p></div>
+</div></div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">&#128308; TOF - Treat as Official <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body"><div class="timeline">
+<div class="timeline-item"><h4>TOF received</h4><p>From a member of the public, service user, carer, or Councillor.</p></div>
+<div class="timeline-item gold-dot"><h4>Consent check</h4><p>If the case involves patient data, consent must be sought before Trust is contacted.</p></div>
+<div class="timeline-item"><h4>Service Lead drafts response</h4><p>Trust input if required. Uses TOF template from SharePoint.</p></div>
+<div class="timeline-item"><h4>Signed off by relevant Senior Manager</h4><p>Does NOT require AD approval. No return to Private Office for clearance unless Action Sheet indicates otherwise.</p></div>
+<div class="timeline-item gold-dot"><h4>Issued directly to member of public</h4><p>Via Office Manager using No Reply mailbox. Copy provided to Private Office by deadline.</p></div>
+</div></div></div>
+<div class="accordion"><div class="accordion-header" onclick="toggleAccordion(this)">&#128995; INV - Invitation Case (Two-Stage) <span class="accordion-arrow">&#9660;</span></div><div class="accordion-body">
+<p style="margin-bottom:16px;font-weight:600;color:var(--navy);">Stage 1 - Advice and Draft Reply</p>
+<div class="timeline">
+<div class="timeline-item"><h4>INV received, draft advice and reply prepared</h4><p>Officials advise Minister on accept/decline with full justification.</p></div>
+<div class="timeline-item"><h4>Consent checked if applicable</h4></div>
+<div class="timeline-item"><h4>Service Lead drafts response and seeks stakeholder input</h4></div>
+<div class="timeline-item"><h4>Co-Director approval, Quality Assured, Submitted to Private Office</h4></div>
+</div>
+<p style="margin:16px 0;font-weight:600;color:var(--navy);">Stage 2 - Briefing (only if Minister ACCEPTS)</p>
+<div class="timeline">
+<div class="timeline-item"><h4>INV Briefing received</h4><p>Cover note, background, plus requested elements: Speaking Notes, Speech, Q&amp;A, Lines to Take, Pen Pictures, Agenda, Press Release.</p></div>
+<div class="timeline-item"><h4>Service Lead drafts briefing, stakeholder input if required</h4></div>
+<div class="timeline-item gold-dot"><h4>Press Office must clear any speeches/speaking notes before inclusion</h4><p>Being copied on a briefing is NOT the same as approving. Factor in Press Office clearance time.</p></div>
+<div class="timeline-item"><h4>Co-Director approval, Quality Assured, Submitted to Private Office</h4></div>
+</div>
+</div></div>
+</section>
+<section class="section" id="contacts">
+<div class="section-header"><div class="section-num">05</div><div class="section-title"><h2>Trust &amp; Agency Contacts</h2><p>Key contacts for ministerial business across HSC</p></div></div>
+<div class="callout info"><div class="callout-icon">&#128204;</div><div class="callout-body"><strong>SPPG Co-ordination Mailboxes</strong><p>All correspondence for SPPG Directorates is co-ordinated via dedicated mailboxes. Always route through these - do not contact Trusts directly without cc'ing the appropriate mailbox.</p></div></div>
+<table class="data-table" style="margin-bottom:32px;"><thead><tr><th>SPPG Area</th><th>Contact</th><th>Mailbox</th></tr></thead><tbody>
+<tr><td>Strategic Performance (PSSID HSC)</td><td>Sarah-Louise Dornan / Karen Lusk / Michael O'Hare</td><td>AQPSSID@hscni.net</td></tr>
+<tr><td>Hospital Care</td><td>Niall Harvey</td><td>AQHospitalCare@hscni.net</td></tr>
+<tr><td>Finance and Corporate Governance</td><td>Niamh Carland</td><td>AQFinance@hscni.net</td></tr>
+<tr><td>Primary Care</td><td>Elaine Fitzsimons / Louise McBurney / Sean Woods / Fergus McIlroy</td><td>AQ.Primary.Care.SPPG@hscni.net</td></tr>
+<tr><td>Community Care</td><td>Sheila Lafferty</td><td>AQ_CommunityCare@hscni.net</td></tr>
+</tbody></table>
+<h3 class="subhead">HSC Trust - AQ Contacts</h3>
+<div class="contact-grid">
+<div class="contact-card"><div class="trust-name"><span></span>Belfast HSC Trust</div><div class="contact-type">AQ Mailbox</div><a href="mailto:publicliaison@belfasttrust.hscni.net">publicliaison@belfasttrust.hscni.net</a></div>
+<div class="contact-card"><div class="trust-name"><span></span>Northern HSC Trust</div><div class="contact-type">Contact - Michelle McNaughton</div><a href="mailto:michelle.mcnaughton@northerntrust.hscni.net">michelle.mcnaughton@northerntrust.hscni.net</a><div class="contact-type">Contact - Aine McAuley</div><a href="mailto:Aine.McAuley@northerntrust.hscni.net">Aine.McAuley@northerntrust.hscni.net</a><div class="contact-type">AQ Mailbox</div><a href="mailto:assembly.questions@northerntrust.hscni.net">assembly.questions@northerntrust.hscni.net</a><div style="font-size:0.8rem;color:var(--textl);margin-top:8px;">Send to BOTH simultaneously</div></div>
+<div class="contact-card"><div class="trust-name"><span></span>Southern HSC Trust</div><div class="contact-type">All Ministerial Business</div><a href="mailto:assembly.questions@southerntrust.hscni.net">assembly.questions@southerntrust.hscni.net</a><div style="font-size:0.8rem;color:var(--textl);margin-top:8px;">Individual patient queries: <a href="mailto:serviceuserfeedback@southerntrust.hscni.net">serviceuserfeedback@southerntrust.hscni.net</a></div></div>
+<div class="contact-card"><div class="trust-name"><span></span>South Eastern HSC Trust</div><div class="contact-type">AQ Mailbox</div><a href="mailto:assembly.questions@setrust.hscni.net">assembly.questions@setrust.hscni.net</a><div class="contact-type">Operational Contacts</div><div style="font-size:0.85rem;color:var(--textl);">Stephen Martin / Allison Calderwood<br>CE's Office, Ulster Hospital<br>028 9055 3169 / 028 9055 3141</div></div>
+<div class="contact-card"><div class="trust-name"><span></span>Western HSC Trust</div><div class="contact-type">Primary - Antoinette Gallagher</div><a href="mailto:antoinette.gallagher@westerntrust.hscni.net">antoinette.gallagher@westerntrust.hscni.net</a><div style="font-size:0.8rem;color:#c0392b;margin-top:6px;font-weight:600;">Copy Antoinette into ALL emails</div><div class="contact-type">Alternate - Madonna McGinley</div><a href="mailto:madonna.mcginley@westerntrust.hscni.net">madonna.mcginley@westerntrust.hscni.net</a></div>
+</div>
+<h3 class="subhead">HSC Trust - Complaints Contacts</h3>
+<div class="contact-grid">
+<div class="contact-card"><div class="trust-name"><span></span>Northern HSC Trust</div><div class="contact-type">Complaints / Service User Experience</div><div style="font-size:0.85rem;margin-bottom:6px;">The Cottage, 5 Greenmount Avenue, Ballymena BT43 6DA - 028 9442 4655</div><a href="mailto:User.feedback@northerntrust.hscni.net">User.feedback@northerntrust.hscni.net</a></div>
+<div class="contact-card"><div class="trust-name"><span></span>Belfast HSC Trust</div><div class="contact-type">Complaints Department</div><div style="font-size:0.85rem;margin-bottom:6px;">McKinney House, 6th Floor, Musgrave Park Hospital BT9 7JB - 028 9504 8000</div><a href="mailto:Complaints@belfasttrust.hscni.net">Complaints@belfasttrust.hscni.net</a></div>
+<div class="contact-card"><div class="trust-name"><span></span>South Eastern HSC Trust</div><div class="contact-type">Complaints Department</div><div style="font-size:0.85rem;margin-bottom:6px;">Lough House, Ards Hospital, Newtownards BT23 4AS - 028 9056 1427</div><a href="mailto:Complaints@setrust.hscni.net">Complaints@setrust.hscni.net</a></div>
+<div class="contact-card"><div class="trust-name"><span></span>Southern HSC Trust</div><div class="contact-type">Complaints Department</div><div style="font-size:0.85rem;margin-bottom:6px;">Trust HQ, Craigavon Area Hospital, 68 Lurgan Road, Portadown BT63 5QQ</div><a href="mailto:serviceuserfeedback@southerntrust.hscni.net">serviceuserfeedback@southerntrust.hscni.net</a></div>
+<div class="contact-card"><div class="trust-name"><span></span>Western HSC Trust</div><div class="contact-type">Complaints Department</div><div style="font-size:0.85rem;margin-bottom:6px;">Altnagelvin Area Hospital, Derry/Londonderry BT47 7SB - 028 7134 5171</div><a href="mailto:Complaints.department@westerntrust.hscni.net">Complaints.department@westerntrust.hscni.net</a></div>
+</div>
+<h3 class="subhead">DoH Private Office</h3>
+<div class="code-block">
+<span class="c-key">Department of Health - Private Office</span><br>
+Room C5.10, Castle Buildings, Stormont, Belfast BT4 3PP<br>
+Tel: <span class="c-val">028 9052 0638</span><br>
+Email: <span class="c-val">Private.Office@health-ni.gov.uk</span><br>
+AQW/AQO submissions: <span class="c-val">private.office@health-ni.gov.uk</span><br>
+Diary Secretary (invitations): <span class="c-val">karen.hamilton@health-ni.gov.uk</span> - 028 9052 0646
+</div>
+</section>
+<section class="section" id="quiz">
+<div class="section-header"><div class="section-num">06</div><div class="section-title"><h2>Knowledge Test</h2><p>20 questions covering all modules - pass mark is 70%</p></div></div>
+<div class="quiz-container" id="quizArea">
+<div class="quiz-meta"><span id="qCounter">Question 1 of 20</span><span class="score-live" id="scoreLive">Score: 0</span></div>
+<div class="quiz-progress-bar"><div class="quiz-progress-fill" id="progressFill" style="width:5%"></div></div>
+<div class="question-card" id="questionCard">
+<div class="question-num" id="qNum">Question 01</div>
+<div class="question-text" id="qText"></div>
+<div class="options-list" id="optionsList"></div>
+<div class="feedback-box" id="feedbackBox"></div>
+</div>
+<div class="quiz-nav">
+<button class="btn btn-secondary" id="restartBtn" onclick="restartQuiz()" style="display:none;">Restart</button>
+<div></div>
+<button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+</div>
+</div>
+<div class="results-panel" id="resultsPanel">
+<div class="results-score-ring" id="scoreRing"><span class="pct" id="scorePct">-</span><span class="out-of" id="scoreOutOf">out of 20</span></div>
+<div class="results-title" id="resultsTitle">-</div>
+<div class="results-sub" id="resultsSub">-</div>
+<div class="results-breakdown">
+<div class="rb-item"><span class="val correct" id="rbCorrect">0</span><span class="lbl">Correct</span></div>
+<div class="rb-item"><span class="val wrong" id="rbWrong">0</span><span class="lbl">Incorrect</span></div>
+<div class="rb-item"><span class="val" id="rbPct" style="color:var(--navy)">0%</span><span class="lbl">Score</span></div>
+</div>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+<button class="btn btn-teal" onclick="restartQuiz()">Try Again</button>
+<button class="btn btn-secondary" onclick="showSection('overview',document.querySelector('.nav-btn'))">Back to Guides</button>
+</div>
+<div class="review-list" id="reviewList"></div>
+</div>
+</section>
+</main>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+<script>
+function checkEmail(){
+  var email=document.getElementById('gateEmail').value.trim().toLowerCase();
+  var err=document.getElementById('gateError');
+  var input=document.getElementById('gateEmail');
+  if(!email){err.textContent='Please enter your email address.';input.classList.add('error');return;}
+  if(!email.endsWith('@hscni.net')){err.textContent='Access is restricted to @hscni.net email addresses only.';input.classList.add('error');return;}
+  err.textContent='';
+  input.classList.remove('error');
+  document.getElementById('emailGate').classList.add('hidden');
+}
+var confettiActive=false;
+function launchConfetti(){
+  var canvas=document.getElementById('confettiCanvas');
+  canvas.style.display='block';
+  var ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  var pieces=[];
+  var colours=['#0db5a6','#c9a227','#e8c547','#0d1b2e','#6c5ce7','#e74c3c','#2ecc71','#3498db'];
+  for(var i=0;i<180;i++){
+    pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,w:Math.random()*12+6,h:Math.random()*6+4,color:colours[Math.floor(Math.random()*colours.length)],rotation:Math.random()*360,vx:(Math.random()-0.5)*4,vy:Math.random()*4+2,vr:(Math.random()-0.5)*6});
+  }
+  confettiActive=true;
+  var startTime=Date.now();
+  function draw(){
+    if(!confettiActive) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(function(p){ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rotation*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rotation+=p.vr;if(p.y>canvas.height)p.y=-20;});
+    if(Date.now()-startTime<5000) requestAnimationFrame(draw);
+    else{confettiActive=false;ctx.clearRect(0,0,canvas.width,canvas.height);canvas.style.display='none';}
+  }
+  draw();
+}
+var questions=[{q:"What does AQW stand for?",options:["Assembly Question Written","Assembly Question Weekly","Assembly Query Written","Annual Question Written"],answer:0,explanation:"AQW stands for Assembly Question Written. AQO stands for Assembly Question Oral. These are the two main forms of Assembly Questions."},{q:"What is the deadline for returning an Ordinary Written AQ to Private Office?",options:["1 working day","2 working days","4 working days","10 working days"],answer:2,explanation:"Ordinary Written AQs must be returned to Private Office within 4 working days. Priority Written AQs have a tighter deadline of 1 to 2 working days."},{q:"Who sets the deadlines for Assembly Questions?",options:["The Minister","Private Office","The Northern Ireland Assembly Business Office via Standing Orders","Your Directorate co-ordination team"],answer:2,explanation:"AQ deadlines are set by the Assembly Business Office and are contained in NI Assembly Standing Orders - not by Private Office. This is why they are non-negotiable."},{q:"What does the S prefix mean in SCORR, SINV or STOF?",options:["Sensitive case requiring extra care","Special category data involved","Secretarial - Permanent Secretary in place instead of a Minister","Submitted by a Special Adviser"],answer:2,explanation:"The S stands for Secretarial, meaning the Permanent Secretary is in post rather than a Minister. Handle these identically, but route to the Perm Sec office."},{q:"A TOF is correspondence received from which of the following?",options:["MPs and MLAs only","Members of the public, service users, carers and Councillors","Chairs and CEOs of HSC Trusts","Other Government Departments"],answer:1,explanation:"TOFs are letters from members of the public, service users, carers, and Councillors. Letters from MPs, MLAs and Trust CEOs/Chairs are set up as COR cases."},{q:"Does a TOF normally need to be returned to Private Office for clearance before being issued?",options:["Yes, always","No - it is issued directly to the member of the public via the Office Manager, unless the Action Sheet indicates otherwise","Only if it involves patient data","Only if it is an STOF"],answer:1,explanation:"TOFs are issued directly via the No Reply mailbox. However, Private Office must receive a copy of the response by the deadline."},{q:"What level of approval is required to sign off a TOF?",options:["Assistant Director (AD)","Director","Relevant Senior Manager - AD approval is NOT required","Co-Director"],answer:2,explanation:"A TOF can be signed off by the relevant senior manager. It does NOT require AD approval, unlike AQWs and CORs."},{q:"What font and size should be used for an AQW draft answer?",options:["Arial, size 12","Times New Roman, size 14","Calibri, size 11","Arial, size 14"],answer:1,explanation:"AQW draft answers use Times New Roman, size 14, 1.5 line spacing, justified. Background notes use Arial, size 14, 1.5 spaced, numbered paragraphs."},{q:"What is the current disproportionate cost limit for a Written Assembly Question?",options:["500 pounds","750 pounds","1000 pounds","1500 pounds"],answer:1,explanation:"The disproportionate cost limit is 750 pounds. If answering would cost more, you may submit the standard formula answer - but the Minister may still direct you to answer."},{q:"What are the two stages of an Invitation (INV) case?",options:["Stage 1: Receipt; Stage 2: Response","Stage 1: Advice and Draft Reply; Stage 2: Briefing (only if accepted)","Stage 1: Trust input; Stage 2: Minister clearance","Stage 1: Draft letter; Stage 2: SpAd clearance"],answer:1,explanation:"Stage 1 is always the Advice and Draft Reply, advising the Minister to accept or decline. Stage 2 - the full Briefing pack - only happens if the Minister accepts."},{q:"When briefing the Minister, how should you address them?",options:["In the third person: The Minister will be meeting...","In the first person: I will be meeting...","In the second person: You will be meeting...","Using their formal title throughout"],answer:2,explanation:"Briefings always address the Minister in the second person: You will be meeting... - not The Minister will be meeting..."},{q:"You receive a COR where it is clear the issue is a patient complaint. What should you do?",options:["Draft a full response from the Department","Refer to the Trust. If from an elected rep, return a sub to Private Office with a draft reply advising the MLA the case has been forwarded","Issue a holding letter immediately","Transfer it to another Directorate"],answer:1,explanation:"Patient complaints within CORs should be referred to the relevant Trust to respond directly. If from an elected rep, you still return a short sub to Private Office with a draft reply explaining what you have done."},{q:"AQs can be reallocated between branches without any prior agreement - True or False?",options:["True","False - AQs will not be reallocated without prior agreement between branches"],answer:1,explanation:"False. AQs will NOT be reallocated without prior agreement between branches. Private Office must be informed when responsibility is agreed to transfer."},{q:"Which must always be included in the Copied to list on a COR submission?",options:["Trust CEO and Press Office only","Special Adviser, Private Secretary, Private Office mailbox and Press Office","Director General and Finance team","Assembly Business Office"],answer:1,explanation:"For CORs, the Copied to list must always include: Special Adviser, Private Secretary, Private Office mailbox (if for the Minister), and Press Office."},{q:"What is the maximum length for a background note accompanying an AQ?",options:["Half an A4 page","1 A4 page","2 A4 pages","No maximum"],answer:1,explanation:"The background note is a maximum of 1 A4 page. Brief and factual, Arial size 14, 1.5 spaced, with numbered paragraphs."},{q:"If a Trust cannot provide information in time for an AQ deadline, what is the preferred approach?",options:["Request an extension from Private Office immediately","Issue a holding letter to the MLA/MP to maintain contact and explain the delay","Submit an incomplete response","Transfer the AQ to the Trust directly"],answer:1,explanation:"A holding letter can be issued to avoid requesting an extension. It maintains the paper trail and keeps the MLA informed. Must be accompanied by a SUB to Private Office. Should not be routine."},{q:"Where are AQ reference numbers and final deadlines set out?",options:["DoH Intranet guidance","Private Office circular","Northern Ireland Assembly Standing Orders","SPPG MoG policy document"],answer:2,explanation:"AQ reference numbers and final deadlines are set by the Assembly Business Office and contained in the NI Assembly Standing Orders."},{q:"You discover a published AQ answer contains a factual error. What do you do?",options:["Wait until a similar question is asked and correct it then","Notify Private Office immediately - they will inform the Minister and Assembly Business Office","Send a correction directly to the Assembly Business Office yourself","Amend the record in TRIM only"],answer:1,explanation:"Notify Private Office immediately. They manage the correction process - informing the Minister and the Assembly Business Office. Officials must also check published Hansard within 1 to 2 weeks of issue."},{q:"For an Ordinary Written AQ, what does Disproportionate Cost mean in practice?",options:["The question is too politically sensitive to answer","The information requested would cost more than 750 pounds to obtain or compile - the standard formula answer may be used","The MLA has asked too many questions that month","The response would require more than 1 page"],answer:1,explanation:"If answering would cost over 750 pounds, you can use the formula: Information in the form requested is not readily available and could only be obtained at disproportionate cost. The Minister may still direct you to answer in full."},{q:"Which of the following is true about Speaking Notes in a Ministerial briefing?",options:["They are written verbatim to be read word-for-word","They are bulleted lines to guide the Minister - not designed to be read verbatim","They require the Minister's approval before being added to the pack","They do not need Press Office clearance"],answer:1,explanation:"Speaking Notes are bulleted lines for the Minister to use as a basis for their own speech - not read verbatim. They DO require Press Office clearance. Speeches are written verbatim."}];
+var currentQ=0,score=0,answered=false,userAnswers=[],quizInitialised=false;
+function showSection(id,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});document.getElementById(id).classList.add('active');if(btn)btn.classList.add('active');window.scrollTo({top:document.querySelector('.nav-bar').offsetTop-1,behavior:'smooth'});if(id==='quiz')initQuiz();}
+function toggleAccordion(header){var body=header.nextElementSibling;var isOpen=header.classList.contains('open');document.querySelectorAll('.accordion-header.open').forEach(function(h){h.classList.remove('open');h.nextElementSibling.classList.remove('open');});if(!isOpen){header.classList.add('open');body.classList.add('open');}}
+function toggleCheck(item){item.classList.toggle('done');}
+window.addEventListener('scroll',function(){var btn=document.getElementById('scrollTopBtn');btn.classList.toggle('visible',window.scrollY>300);});
+function initQuiz(){if(quizInitialised)return;quizInitialised=true;renderQuestion();}
+function renderQuestion(){var q=questions[currentQ];document.getElementById('qNum').textContent='Question '+String(currentQ+1).padStart(2,'0');document.getElementById('qCounter').textContent='Question '+(currentQ+1)+' of '+questions.length;document.getElementById('scoreLive').textContent='Score: '+score;document.getElementById('qText').textContent=q.q;document.getElementById('progressFill').style.width=(((currentQ)/questions.length)*100+5)+'%';var ol=document.getElementById('optionsList');ol.innerHTML='';var letters=['A','B','C','D'];q.options.forEach(function(opt,i){var btn=document.createElement('button');btn.className='option-btn';btn.innerHTML='<div class="option-letter">'+letters[i]+'</div><span>'+opt+'</span>';btn.onclick=function(){selectAnswer(i);};ol.appendChild(btn);});document.getElementById('feedbackBox').className='feedback-box';document.getElementById('feedbackBox').textContent='';document.getElementById('nextBtn').disabled=true;document.getElementById('nextBtn').textContent=currentQ===questions.length-1?'Finish':'Next';document.getElementById('restartBtn').style.display='none';answered=false;}
+function selectAnswer(idx){if(answered)return;answered=true;var q=questions[currentQ];var btns=document.querySelectorAll('.option-btn');var fb=document.getElementById('feedbackBox');btns.forEach(function(b){b.disabled=true;});btns[idx].classList.add(idx===q.answer?'correct':'wrong');if(idx!==q.answer)btns[q.answer].classList.add('correct');var isCorrect=idx===q.answer;if(isCorrect)score++;userAnswers[currentQ]={chosen:idx,correct:isCorrect};fb.className='feedback-box '+(isCorrect?'correct':'wrong');fb.innerHTML='<strong>'+(isCorrect?'Correct!':'Not quite.')+'</strong> '+q.explanation;document.getElementById('nextBtn').disabled=false;document.getElementById('scoreLive').textContent='Score: '+score;}
+function nextQuestion(){currentQ++;if(currentQ>=questions.length){showResults();}else{renderQuestion();}}
+function showResults(){document.getElementById('quizArea').style.display='none';var panel=document.getElementById('resultsPanel');panel.classList.add('show');var pct=Math.round((score/questions.length)*100);var pass=pct>=70;document.getElementById('scorePct').textContent=pct+'%';document.getElementById('scoreOutOf').textContent=score+' of '+questions.length;document.getElementById('scoreRing').className='results-score-ring '+(pass?'pass':'fail');document.getElementById('resultsTitle').textContent=pass?'Well done - Passed!':'Keep studying - not quite there yet';document.getElementById('resultsSub').textContent=pass?'You scored '+score+' out of '+questions.length+' ('+pct+'%). You have demonstrated a solid understanding of Ministerial Correspondence processes.':'You scored '+score+' out of '+questions.length+' ('+pct+'%). The pass mark is 70%. Review the modules above and give it another go.';document.getElementById('rbCorrect').textContent=score;document.getElementById('rbWrong').textContent=questions.length-score;document.getElementById('rbPct').textContent=pct+'%';document.getElementById('progressFill').style.width='100%';if(pass)setTimeout(launchConfetti,400);var rl=document.getElementById('reviewList');rl.innerHTML='<h3 style="font-family:Georgia,serif;color:var(--navy);font-size:1.1rem;margin-bottom:16px;">Question Review</h3>';questions.forEach(function(q,i){var ua=userAnswers[i];var div=document.createElement('div');div.className='review-item '+(ua&&ua.correct?'r-correct':'r-wrong');div.innerHTML='<div class="q-num">Q'+(i+1)+' - '+(ua&&ua.correct?'Correct':'Incorrect')+'</div><div class="q-text">'+q.q+'</div>'+(!ua||!ua.correct?'<div class="a-correct-lbl">Correct answer: '+q.options[q.answer]+'</div>':'');rl.appendChild(div);});}
+function restartQuiz(){currentQ=0;score=0;answered=false;userAnswers=[];document.getElementById('quizArea').style.display='block';document.getElementById('resultsPanel').classList.remove('show');document.getElementById('restartBtn').style.display='none';renderQuestion();}
+</script>
+</body>
+</html>
